@@ -15,8 +15,9 @@ Usage::
 """
 from __future__ import annotations
 
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
-from typing import Any, Awaitable, Callable
+from typing import Any
 
 from sentinel.core.decision import Verdict
 from sentinel.core.guardian import Guardian

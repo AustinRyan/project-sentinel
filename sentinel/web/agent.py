@@ -88,8 +88,8 @@ class ChatAgent:
                     "Use the tools when needed to complete the user's request. "
                     "Be concise in your responses."
                 ),
-                tools=self._tool_executor.get_tool_definitions(),
-                messages=messages,
+                tools=self._tool_executor.get_tool_definitions(),  # type: ignore[arg-type]
+                messages=messages,  # type: ignore[arg-type]
             )
 
             has_tool_use = any(
@@ -98,7 +98,7 @@ class ChatAgent:
 
             if not has_tool_use:
                 text = "".join(
-                    block.text  # type: ignore[union-attr]
+                    getattr(block, "text", "")
                     for block in response.content
                     if block.type == "text"
                 )
@@ -117,18 +117,19 @@ class ChatAgent:
                 if block.type == "text":
                     assistant_content.append({
                         "type": "text",
-                        "text": block.text,  # type: ignore[union-attr]
+                        "text": getattr(block, "text", ""),
                     })
                 elif block.type == "tool_use":
-                    block_input = (
-                        block.input  # type: ignore[union-attr]
-                        if isinstance(block.input, dict)  # type: ignore[union-attr]
-                        else {}
+                    block_id: str = getattr(block, "id", "")
+                    block_name: str = getattr(block, "name", "")
+                    raw_input = getattr(block, "input", {})
+                    block_input: dict[str, Any] = (
+                        raw_input if isinstance(raw_input, dict) else {}
                     )
                     assistant_content.append({
                         "type": "tool_use",
-                        "id": block.id,  # type: ignore[union-attr]
-                        "name": block.name,  # type: ignore[union-attr]
+                        "id": block_id,
+                        "name": block_name,
                         "input": block_input,
                     })
 
@@ -136,7 +137,7 @@ class ChatAgent:
                         agent_id=self._agent_id,
                         session_id=self._session_id,
                         original_goal=self._original_goal,
-                        tool_name=block.name,  # type: ignore[union-attr]
+                        tool_name=block_name,
                         tool_input=block_input,
                         conversation_history=self._history,
                     )
@@ -148,7 +149,7 @@ class ChatAgent:
                             "verdict": verdict.verdict.value,
                             "risk_score": verdict.risk_score,
                             "risk_delta": verdict.risk_delta,
-                            "tool_name": block.name,  # type: ignore[union-attr]
+                            "tool_name": block_name,
                             "tool_input": block_input,
                             "reasons": verdict.reasons,
                             "drift_score": verdict.drift_score,
@@ -160,11 +161,11 @@ class ChatAgent:
 
                     if verdict.verdict == Verdict.ALLOW:
                         result = await self._tool_executor.execute(
-                            block.name,  # type: ignore[union-attr]
+                            block_name,
                             block_input,
                         )
                         tool_call_info = ToolCallInfo(
-                            tool_name=block.name,  # type: ignore[union-attr]
+                            tool_name=block_name,
                             tool_input=block_input,
                             verdict="allow",
                             risk_score=verdict.risk_score,
@@ -174,17 +175,17 @@ class ChatAgent:
                         )
                         tool_results.append({
                             "type": "tool_result",
-                            "tool_use_id": block.id,  # type: ignore[union-attr]
+                            "tool_use_id": block_id,
                             "content": json.dumps(result),
                         })
                     else:
                         denial_msg = (
-                            f"Tool '{block.name}' was DENIED. "  # type: ignore[union-attr]
+                            f"Tool '{block_name}' was DENIED. "
                             f"Verdict: {verdict.verdict.value}. "
                             f"Reason: {verdict.recommended_action}"
                         )
                         tool_call_info = ToolCallInfo(
-                            tool_name=block.name,  # type: ignore[union-attr]
+                            tool_name=block_name,
                             tool_input=block_input,
                             verdict=verdict.verdict.value,
                             risk_score=verdict.risk_score,
@@ -193,7 +194,7 @@ class ChatAgent:
                         )
                         tool_results.append({
                             "type": "tool_result",
-                            "tool_use_id": block.id,  # type: ignore[union-attr]
+                            "tool_use_id": block_id,
                             "content": denial_msg,
                             "is_error": True,
                         })

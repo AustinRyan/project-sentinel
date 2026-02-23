@@ -3,14 +3,12 @@ from __future__ import annotations
 
 import uuid
 from contextlib import asynccontextmanager
-from typing import Any
 
 import structlog
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 
 from sentinel.config import SentinelConfig
-from sentinel.core.decision import Verdict
 from sentinel.core.guardian import Guardian
 from sentinel.identity.agent import AgentIdentity, AgentRole, ToolPermission
 from sentinel.identity.registry import AgentRegistry

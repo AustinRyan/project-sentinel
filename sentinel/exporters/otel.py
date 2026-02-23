@@ -10,9 +10,8 @@ from typing import Any
 from sentinel.core.decision import SecurityVerdict
 
 try:
-    from opentelemetry import trace
-    from opentelemetry.sdk.trace import TracerProvider
     from opentelemetry.sdk.resources import Resource
+    from opentelemetry.sdk.trace import TracerProvider
 
     HAS_OTEL = True
 except ImportError:

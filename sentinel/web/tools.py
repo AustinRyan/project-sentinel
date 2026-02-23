@@ -7,7 +7,6 @@ from __future__ import annotations
 
 from typing import Any
 
-
 DEMO_TOOLS = [
     {
         "name": "read_file",
@@ -151,7 +150,7 @@ class MockToolExecutor:
     """Executes mock tools for the demo environment."""
 
     def __init__(self) -> None:
-        self._tools = {t["name"]: t for t in DEMO_TOOLS}
+        self._tools: dict[str, dict[str, Any]] = {str(t["name"]): t for t in DEMO_TOOLS}
 
     @property
     def tool_names(self) -> list[str]:
@@ -168,4 +167,4 @@ class MockToolExecutor:
         handler = _MOCK_RESPONSES.get(tool_name)
         if handler is None:
             return {"error": f"Unknown tool: {tool_name}"}
-        return handler(tool_input)
+        return dict(handler(tool_input))

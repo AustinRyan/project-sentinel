@@ -38,11 +38,11 @@ class SentinelToolWrapper:
 
     @property
     def name(self) -> str:
-        return self._tool.name
+        return str(self._tool.name)
 
     @property
     def description(self) -> str:
-        return self._tool.description
+        return str(self._tool.description)
 
     @property
     def args_schema(self) -> Any:
