@@ -1,4 +1,4 @@
-"""CrewAI integration adapter for Sentinel.
+"""CrewAI integration adapter for Janus.
 
 Usage::
 

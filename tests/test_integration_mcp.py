@@ -6,12 +6,12 @@ from unittest.mock import AsyncMock
 import pytest
 
 from janus.core.decision import SecurityVerdict, Verdict
-from janus.integrations.mcp import SentinelMCPServer, MCPToolDefinition
+from janus.integrations.mcp import JanusMCPServer, MCPToolDefinition
 
 
 async def test_mcp_server_registers_tools() -> None:
     mock_guardian = AsyncMock()
-    server = SentinelMCPServer(
+    server = JanusMCPServer(
         guardian=mock_guardian,
         agent_id="test-agent",
         session_id="test-session",
@@ -34,7 +34,7 @@ async def test_mcp_server_allows_tool() -> None:
     )
 
     handler = AsyncMock(return_value={"content": "file data"})
-    server = SentinelMCPServer(
+    server = JanusMCPServer(
         guardian=mock_guardian,
         agent_id="test-agent",
         session_id="test-session",
@@ -59,7 +59,7 @@ async def test_mcp_server_blocks_tool() -> None:
     )
 
     handler = AsyncMock()
-    server = SentinelMCPServer(
+    server = JanusMCPServer(
         guardian=mock_guardian,
         agent_id="test-agent",
         session_id="test-session",

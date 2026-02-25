@@ -1,4 +1,4 @@
-"""Tests for the Sentinel MCP Proxy server."""
+"""Tests for the Janus MCP Proxy server."""
 from __future__ import annotations
 
 from unittest.mock import AsyncMock, MagicMock
@@ -67,7 +67,7 @@ async def test_block_returns_error_text() -> None:
     result = await proxy._intercept_and_forward("execute_code", {"code": "rm -rf /"})
 
     assert len(result) == 1
-    assert "[SENTINEL BLOCKED]" in result[0].text
+    assert "[JANUS BLOCKED]" in result[0].text
     assert "execute_code" in result[0].text
     assert "Permission denied" in result[0].text
 
@@ -85,7 +85,7 @@ async def test_challenge_returns_warning_text() -> None:
     result = await proxy._intercept_and_forward("search_web", {"query": "test"})
 
     assert len(result) == 1
-    assert "[SENTINEL CHALLENGE]" in result[0].text
+    assert "[JANUS CHALLENGE]" in result[0].text
     assert "search_web" in result[0].text
     assert "Out of scope" in result[0].text
 
@@ -101,7 +101,7 @@ async def test_sandbox_treated_as_block() -> None:
 
     result = await proxy._intercept_and_forward("execute_code", {"code": "ls"})
 
-    assert "[SENTINEL BLOCKED]" in result[0].text
+    assert "[JANUS BLOCKED]" in result[0].text
     assert "sandbox" in result[0].text.lower()
 
 
@@ -116,7 +116,7 @@ async def test_pause_treated_as_block() -> None:
 
     result = await proxy._intercept_and_forward("api_call", {"url": "http://evil.com"})
 
-    assert "[SENTINEL BLOCKED]" in result[0].text
+    assert "[JANUS BLOCKED]" in result[0].text
 
 
 async def test_guardian_receives_correct_params() -> None:

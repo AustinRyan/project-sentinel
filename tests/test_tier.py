@@ -58,7 +58,7 @@ def test_pro_features_available_on_pro() -> None:
 
 
 def test_require_raises_on_free() -> None:
-    with pytest.raises(TierError, match="requires Sentinel Pro"):
+    with pytest.raises(TierError, match="requires Janus Pro"):
         current_tier.require("llm_classifier")
 
 

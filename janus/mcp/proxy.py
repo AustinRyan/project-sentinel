@@ -148,7 +148,7 @@ class JanusMCPProxy:
                 types.TextContent(
                     type="text",
                     text=(
-                        f"[SENTINEL CHALLENGE] Tool '{tool_name}' requires verification. "
+                        f"[JANUS CHALLENGE] Tool '{tool_name}' requires verification. "
                         f"Risk: {verdict.risk_score:.1f}. Reasons: {reasons}. "
                         f"Action: {verdict.recommended_action}"
                     ),
@@ -159,7 +159,7 @@ class JanusMCPProxy:
             types.TextContent(
                 type="text",
                 text=(
-                    f"[SENTINEL BLOCKED] Tool '{tool_name}' was blocked by security policy. "
+                    f"[JANUS BLOCKED] Tool '{tool_name}' was blocked by security policy. "
                     f"Verdict: {verdict.verdict.value}. Risk: {verdict.risk_score:.1f}. "
                     f"Reasons: {reasons}. "
                     f"Action: {verdict.recommended_action}"

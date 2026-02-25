@@ -144,14 +144,14 @@ class McpChatAgent:
 
                     # Parse reasons from MCP response text for BLOCK/CHALLENGE
                     reasons: list[str] = []
-                    if "[SENTINEL BLOCKED]" in result_text:
+                    if "[JANUS BLOCKED]" in result_text:
                         # Extract reasons from the formatted message
                         if "Reasons:" in result_text:
                             reasons_part = result_text.split("Reasons:")[1]
                             if "Action:" in reasons_part:
                                 reasons_part = reasons_part.split("Action:")[0]
                             reasons = [reasons_part.strip()]
-                    elif "[SENTINEL CHALLENGE]" in result_text:
+                    elif "[JANUS CHALLENGE]" in result_text:
                         if "Reasons:" in result_text:
                             reasons_part = result_text.split("Reasons:")[1]
                             if "Action:" in reasons_part:
@@ -159,8 +159,8 @@ class McpChatAgent:
                             reasons = [reasons_part.strip()]
 
                     is_error = (
-                        "[SENTINEL BLOCKED]" in result_text
-                        or "[SENTINEL CHALLENGE]" in result_text
+                        "[JANUS BLOCKED]" in result_text
+                        or "[JANUS CHALLENGE]" in result_text
                     )
 
                     # Broadcast event for dashboard

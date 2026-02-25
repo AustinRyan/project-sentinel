@@ -514,7 +514,7 @@ export default function LandingPage() {
               </a>
             ))}
             <a
-              href="https://github.com/project-janus"
+              href="https://github.com/AustinRyan/project-sentinel"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[13px] text-[#636880] transition-colors hover:text-[#e4e7ef]"
@@ -525,7 +525,7 @@ export default function LandingPage() {
 
           <div className="hidden items-center gap-3 md:flex">
             <a
-              href="https://github.com/project-janus"
+              href="https://github.com/AustinRyan/project-sentinel"
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-lg border border-[#1e2233] bg-[#0e1018] px-4 py-2 text-[13px] font-medium text-[#e4e7ef] transition-all hover:border-[#5eead4]/30 hover:bg-[#161923]"
@@ -614,7 +614,7 @@ export default function LandingPage() {
           {/* CTAs */}
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <a
-              href="https://github.com/project-janus"
+              href="https://github.com/AustinRyan/project-sentinel"
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center gap-2 rounded-xl bg-[#5eead4] px-6 py-3.5 text-[14px] font-bold text-[#06080e] transition-all hover:bg-[#2dd4bf] hover:shadow-[0_0_28px_#5eead430]"
@@ -798,7 +798,7 @@ export default function LandingPage() {
               >
                 <div>
                   <span className="text-[#60a5fa]">from</span>{" "}
-                  <span className="text-[#e4e7ef]">sentinel</span>{" "}
+                  <span className="text-[#e4e7ef]">janus</span>{" "}
                   <span className="text-[#60a5fa]">import</span>{" "}
                   <span className="text-[#e4e7ef]">Guardian</span>
                 </div>
@@ -966,7 +966,7 @@ export default function LandingPage() {
               </ul>
 
               <a
-                href="https://github.com/project-janus"
+                href="https://github.com/AustinRyan/project-sentinel"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-7 flex w-full items-center justify-center gap-2 rounded-xl border border-[#1e2233] bg-[#0e1018] px-4 py-3 text-[13px] font-bold text-[#e4e7ef] transition-all hover:border-[#5eead4]/30"
@@ -1120,7 +1120,7 @@ export default function LandingPage() {
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <a
-              href="https://github.com/project-janus"
+              href="https://github.com/AustinRyan/project-sentinel"
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center gap-2 rounded-xl bg-[#5eead4] px-7 py-3.5 text-[14px] font-bold text-[#06080e] transition-all hover:bg-[#2dd4bf] hover:shadow-[0_0_28px_#5eead430]"

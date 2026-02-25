@@ -1,4 +1,4 @@
-"""OpenAI Assistants/Function Calling integration adapter for Sentinel.
+"""OpenAI Assistants/Function Calling integration adapter for Janus.
 
 Sits between OpenAI's function calling response and actual execution.
 

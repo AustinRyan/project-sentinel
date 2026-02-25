@@ -1,12 +1,12 @@
-"""Claude MCP (Model Context Protocol) integration adapter for Sentinel.
+"""Claude MCP (Model Context Protocol) integration adapter for Janus.
 
 Acts as a security middleware MCP server that wraps tool definitions.
 
 Usage::
 
-    from janus.integrations.mcp import SentinelMCPServer, MCPToolDefinition
+    from janus.integrations.mcp import JanusMCPServer, MCPToolDefinition
 
-    server = SentinelMCPServer(guardian=guardian, agent_id="a-1", session_id="s-1")
+    server = JanusMCPServer(guardian=guardian, agent_id="a-1", session_id="s-1")
     server.add_tool(MCPToolDefinition(
         name="read_file", description="Read a file",
         input_schema={...}, handler=my_read_handler,
@@ -33,7 +33,7 @@ class MCPToolDefinition:
     handler: Callable[..., Awaitable[Any]]
 
 
-class SentinelMCPServer:
+class JanusMCPServer:
     """MCP server that wraps tool definitions with Guardian security."""
 
     def __init__(

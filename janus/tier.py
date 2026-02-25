@@ -79,7 +79,7 @@ class _TierState:
         """Raise if a PRO feature is used on FREE tier."""
         if not self.check(feature):
             raise TierError(
-                f"'{feature}' requires Sentinel Pro. "
+                f"'{feature}' requires Janus Pro. "
                 "Upgrade at https://janus-security.dev/pricing"
             )
 
