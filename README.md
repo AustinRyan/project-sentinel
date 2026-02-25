@@ -82,6 +82,24 @@ Then in Claude Desktop config:
 
 Every tool call now goes through the Guardian security pipeline before reaching the real tool.
 
+### Dashboard
+
+Janus includes a real-time security dashboard for monitoring all protected agents:
+
+```bash
+janus serve
+# → http://localhost:8000
+```
+
+The dashboard shows:
+- Live security events across all agents and sessions
+- Risk scores, verdicts, and trend charts
+- Agent status (active, locked, challenged)
+- Drill-down into individual tool calls and pipeline decisions
+- Audit trail with filtering and export
+
+Self-hosted by default — your security data stays on your infrastructure.
+
 ### Configuration
 
 ```bash
@@ -205,7 +223,7 @@ pip install -e ".[dev,integrations]"
 pytest tests/ -v
 ```
 
-456 tests. All passing.
+469 tests. All passing.
 
 ## License
 

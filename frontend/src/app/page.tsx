@@ -1106,10 +1106,10 @@ export default function LandingPage() {
           {/* Feature highlights */}
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { icon: Layers, label: "Multi-model", desc: "Anthropic, OpenAI, or Ollama", color: "#5eead4" },
-              { icon: BookOpen, label: "Audit export", desc: "CSV, JSON, JSONL formats", color: "#a78bfa" },
+              { icon: BarChart3, label: "Live dashboard", desc: "janus serve → localhost:8000", color: "#5eead4" },
+              { icon: Layers, label: "Multi-model", desc: "Anthropic, OpenAI, or Ollama", color: "#a78bfa" },
               { icon: Zap, label: "Real-time alerts", desc: "Slack, email, Telegram", color: "#fbbf24" },
-              { icon: Activity, label: "Session replay", desc: "Full forensic trace", color: "#60a5fa" },
+              { icon: BookOpen, label: "Audit export", desc: "CSV, JSON, JSONL formats", color: "#60a5fa" },
             ].map((feat) => (
               <div
                 key={feat.label}
