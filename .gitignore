@@ -32,6 +32,13 @@ frontend/.next/
 frontend/out/
 .next/
 
+# Internal docs
+PRODUCTION_SETUP.md
+docs/STRIPE_SETUP.md
+
+# Claude Code
+.claude/
+
 # IDE
 .idea/
 .vscode/
