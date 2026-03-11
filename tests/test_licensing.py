@@ -1,10 +1,6 @@
 """Tests for HMAC-signed license validation."""
 from __future__ import annotations
 
-import time
-
-import pytest
-
 from janus.licensing import generate_license, validate_license
 from tests.conftest import TEST_PRO_KEY
 

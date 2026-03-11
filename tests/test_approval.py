@@ -1,8 +1,6 @@
 """Tests for the HITL approval system."""
 from __future__ import annotations
 
-import json
-
 import pytest
 from httpx import ASGITransport, AsyncClient
 
@@ -10,7 +8,6 @@ from janus.core.approval import ApprovalManager, needs_human_review
 from janus.storage.database import DatabaseManager
 from janus.web.app import _setup, _teardown, create_app, state
 from janus.web.events import EventBroadcaster, SecurityEvent
-
 
 # ── Unit tests for ApprovalManager ─────────────────────────────────
 

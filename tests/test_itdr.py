@@ -1,11 +1,9 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
-import pytest
 import time_machine
 
-from janus.core.decision import ToolCallRequest
 from janus.identity.agent import AgentIdentity, AgentRole
 from janus.identity.registry import AgentRegistry
 from janus.itdr.anomaly import ServiceAccountAnomalyDetector
@@ -15,7 +13,6 @@ from janus.itdr.signals import AnomalySignal, CollusionSignal, EscalationSignal
 from janus.storage.database import DatabaseManager
 from janus.storage.models import ToolUsageRow
 from tests.conftest import make_request
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -55,7 +52,7 @@ async def test_anomaly_unusual_hour(memory_db: DatabaseManager) -> None:
     detector = ServiceAccountAnomalyDetector(registry)
     agent = _make_agent()
 
-    ts = datetime(2024, 1, 1, 3, 0, tzinfo=timezone.utc)
+    ts = datetime(2024, 1, 1, 3, 0, tzinfo=UTC)
     request = make_request(
         agent_id="agent-1",
         tool_name="read_file",
@@ -76,7 +73,7 @@ async def test_anomaly_normal_hour(memory_db: DatabaseManager) -> None:
     detector = ServiceAccountAnomalyDetector(registry)
     agent = _make_agent()
 
-    ts = datetime(2024, 1, 1, 10, 0, tzinfo=timezone.utc)
+    ts = datetime(2024, 1, 1, 10, 0, tzinfo=UTC)
     request = make_request(
         agent_id="agent-1",
         tool_name="read_file",
@@ -94,7 +91,7 @@ async def test_anomaly_new_endpoint(memory_db: DatabaseManager) -> None:
     detector = ServiceAccountAnomalyDetector(registry)
     agent = _make_agent()
 
-    ts = datetime(2024, 1, 1, 10, 0, tzinfo=timezone.utc)
+    ts = datetime(2024, 1, 1, 10, 0, tzinfo=UTC)
     request = make_request(
         agent_id="agent-1",
         tool_name="delete_database",
@@ -114,7 +111,7 @@ async def test_anomaly_known_endpoint(memory_db: DatabaseManager) -> None:
     detector = ServiceAccountAnomalyDetector(registry)
     agent = _make_agent()
 
-    ts = datetime(2024, 1, 1, 10, 0, tzinfo=timezone.utc)
+    ts = datetime(2024, 1, 1, 10, 0, tzinfo=UTC)
     request = make_request(
         agent_id="agent-1",
         tool_name="read_file",
@@ -132,7 +129,7 @@ async def test_anomaly_volume_spike(memory_db: DatabaseManager) -> None:
     detector = ServiceAccountAnomalyDetector(registry)
     agent = _make_agent()
 
-    ts = datetime(2024, 1, 1, 10, 0, tzinfo=timezone.utc)
+    ts = datetime(2024, 1, 1, 10, 0, tzinfo=UTC)
     request = make_request(
         agent_id="agent-1",
         tool_name="read_file",
@@ -157,7 +154,7 @@ async def test_anomaly_severity_scaling(memory_db: DatabaseManager) -> None:
     agent = _make_agent()
 
     # Trigger all 3: unusual hour (3am), new endpoint, volume spike
-    ts = datetime(2024, 1, 1, 3, 0, tzinfo=timezone.utc)
+    ts = datetime(2024, 1, 1, 3, 0, tzinfo=UTC)
     request = make_request(
         agent_id="agent-1",
         tool_name="never_seen_tool",
@@ -282,7 +279,7 @@ def test_collusion_no_match() -> None:
 # ===========================================================================
 
 
-@time_machine.travel(datetime(2024, 6, 15, 12, 0, tzinfo=timezone.utc), tick=False)
+@time_machine.travel(datetime(2024, 6, 15, 12, 0, tzinfo=UTC), tick=False)
 def test_escalation_no_attempts() -> None:
     """No recorded attempts should return None."""
     tracker = PrivilegeEscalationTracker()
@@ -291,7 +288,7 @@ def test_escalation_no_attempts() -> None:
     assert signal is None
 
 
-@time_machine.travel(datetime(2024, 6, 15, 12, 0, tzinfo=timezone.utc), tick=False)
+@time_machine.travel(datetime(2024, 6, 15, 12, 0, tzinfo=UTC), tick=False)
 def test_escalation_few_attempts() -> None:
     """1-2 attempts should produce a low-severity signal."""
     tracker = PrivilegeEscalationTracker()
@@ -306,7 +303,7 @@ def test_escalation_few_attempts() -> None:
     assert len(signal.attempts) == 2
 
 
-@time_machine.travel(datetime(2024, 6, 15, 12, 0, tzinfo=timezone.utc), tick=False)
+@time_machine.travel(datetime(2024, 6, 15, 12, 0, tzinfo=UTC), tick=False)
 def test_escalation_many_attempts() -> None:
     """3+ attempts should produce a high-severity signal."""
     tracker = PrivilegeEscalationTracker()
@@ -322,7 +319,7 @@ def test_escalation_many_attempts() -> None:
     assert len(signal.attempts) == 3
 
 
-@time_machine.travel(datetime(2024, 6, 15, 12, 0, tzinfo=timezone.utc), tick=False)
+@time_machine.travel(datetime(2024, 6, 15, 12, 0, tzinfo=UTC), tick=False)
 def test_escalation_window_expiry() -> None:
     """Attempts older than the window should not be counted."""
     tracker = PrivilegeEscalationTracker()
@@ -333,7 +330,7 @@ def test_escalation_window_expiry() -> None:
     tracker.record_attempt("agent-1", "modify_permissions")
 
     # Manually backdate all attempts to 2 hours ago
-    old_time = datetime.now(timezone.utc) - timedelta(hours=2)
+    old_time = datetime.now(UTC) - timedelta(hours=2)
     for attempt in tracker._boundary_attempts["agent-1"]:
         attempt.timestamp = old_time
 

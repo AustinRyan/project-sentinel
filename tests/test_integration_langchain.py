@@ -3,8 +3,6 @@ from __future__ import annotations
 
 from unittest.mock import AsyncMock, MagicMock
 
-import pytest
-
 from janus.core.decision import SecurityVerdict, Verdict
 from janus.integrations.langchain import JanusToolWrapper, janus_guard
 

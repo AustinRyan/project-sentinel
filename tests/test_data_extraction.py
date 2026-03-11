@@ -1,22 +1,18 @@
 """Tests for data extraction / volume tracking protections."""
 from __future__ import annotations
 
-import pytest
-
 from janus.config import JanusConfig
 from janus.core.data_extraction import (
     DataVolumeCheck,
     DataVolumeTracker,
-    _estimate_data_size,
 )
-from janus.core.decision import PipelineContext, ToolCallRequest, Verdict
+from janus.core.decision import PipelineContext, ToolCallRequest
 from janus.core.guardian import Guardian
 from janus.identity.agent import AgentIdentity, AgentRole, ToolPermission
 from janus.identity.registry import AgentRegistry
 from janus.risk.engine import RiskEngine
 from janus.storage.database import DatabaseManager
 from janus.storage.session_store import InMemorySessionStore
-
 
 # ---------------------------------------------------------------------------
 # Helpers

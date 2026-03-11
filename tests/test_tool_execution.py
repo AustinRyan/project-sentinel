@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import json
-import os
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -13,7 +12,6 @@ from janus.tools.executor import ToolExecutor, WebhookExecutor, _resolve_credent
 from janus.tools.models import RegisteredTool
 from janus.tools.registry import ToolRegistry
 from janus.web.app import _setup, _teardown, create_app, state
-
 
 # ── Fixtures ───────────────────────────────────────────────────────────
 

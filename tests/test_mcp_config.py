@@ -4,8 +4,6 @@ from __future__ import annotations
 import os
 import tempfile
 
-import pytest
-
 from janus.mcp.config import (
     AgentConfig,
     ProxyConfig,

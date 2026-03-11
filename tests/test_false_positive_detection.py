@@ -24,7 +24,6 @@ from janus.risk.engine import RiskEngine
 from janus.storage.database import DatabaseManager
 from janus.storage.session_store import InMemorySessionStore
 
-
 # ---------------------------------------------------------------------------
 # Fixture: full Guardian with all 6 agents (same as integration tests)
 # ---------------------------------------------------------------------------

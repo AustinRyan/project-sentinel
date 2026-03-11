@@ -4,7 +4,6 @@ from __future__ import annotations
 import pytest
 
 from janus.tier import Tier, TierError, current_tier
-
 from tests.conftest import TEST_PRO_KEY
 
 

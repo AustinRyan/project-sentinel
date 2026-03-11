@@ -7,24 +7,14 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
-import pytest
-
 # ─── Test 1: Basic Import ────────────────────────────────────────────────────
 
 
 def test_top_level_imports() -> None:
     """A user can import everything they need from the top-level package."""
     from janus import (
-        AgentIdentity,
-        AgentRegistry,
-        AgentRole,
-        CheckResult,
         Guardian,
         JanusConfig,
-        PipelineContext,
-        SecurityVerdict,
-        ToolCallRequest,
-        ToolPermission,
         Verdict,
     )
 

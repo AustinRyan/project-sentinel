@@ -3,8 +3,6 @@ from __future__ import annotations
 
 from datetime import datetime
 
-import pytest
-
 from janus.config import ExporterConfig
 from janus.core.decision import SecurityVerdict, Verdict
 from janus.exporters.coordinator import ExporterCoordinator

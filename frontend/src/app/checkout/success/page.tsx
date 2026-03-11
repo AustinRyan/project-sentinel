@@ -47,19 +47,34 @@ export default function CheckoutSuccess() {
       return;
     }
 
-    fetch(`/api/billing/session/${sessionId}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Not found");
-        return res.json();
-      })
-      .then((data) => {
-        setSession(data);
-        setLoading(false);
-      })
-      .catch(() => {
-        setError(true);
-        setLoading(false);
-      });
+    // Retry a few times — the webhook may arrive after the redirect
+    let attempts = 0;
+    const maxAttempts = 8;
+    const delayMs = 2000;
+
+    const poll = () => {
+      attempts++;
+      fetch(`/api/billing/session/${sessionId}`)
+        .then((res) => {
+          if (!res.ok) throw new Error("Not found");
+          return res.json();
+        })
+        .then((data) => {
+          setSession(data);
+          setLoading(false);
+        })
+        .catch(() => {
+          if (attempts < maxAttempts) {
+            setTimeout(poll, delayMs);
+          } else {
+            setError(true);
+            setLoading(false);
+          }
+        });
+    };
+
+    // Start after a brief delay to give the webhook time to arrive
+    setTimeout(poll, 1500);
   }, []);
 
   const handleCopy = useCallback(() => {
@@ -140,7 +155,7 @@ export default function CheckoutSuccess() {
             </div>
 
             {/* License key */}
-            <div className="rounded-xl border border-[#1e2233] bg-[#06080e] p-5">
+            <div className="overflow-hidden rounded-xl border border-[#1e2233] bg-[#06080e] p-5">
               <div className="mb-2 flex items-center justify-between">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-[#636880]">
                   License Key
@@ -163,8 +178,8 @@ export default function CheckoutSuccess() {
                 </button>
               </div>
               <code
-                className="block break-all text-sm leading-relaxed text-[#5eead4]"
-                style={{ fontFamily: "var(--font-mono)" }}
+                className="block overflow-wrap-anywhere break-all text-[13px] leading-relaxed text-[#5eead4]"
+                style={{ fontFamily: "var(--font-mono)", overflowWrap: "anywhere", wordBreak: "break-all" }}
               >
                 {session.license_key}
               </code>

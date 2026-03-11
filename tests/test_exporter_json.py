@@ -4,8 +4,6 @@ from __future__ import annotations
 import json
 from io import StringIO
 
-import pytest
-
 from janus.core.decision import SecurityVerdict, Verdict
 from janus.exporters.json_logger import JsonLogExporter
 

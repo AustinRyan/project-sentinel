@@ -113,6 +113,24 @@ def validate_license(key: str) -> tuple[bool, str]:
     return True, payload.get("tier", "pro")
 
 
+async def is_license_revoked(key: str, db: object) -> bool:
+    """Check if a license has been revoked/expired in the database.
+
+    Returns True if the license exists in DB with a non-active status.
+    Returns False (not revoked) if the key isn't in the DB at all
+    (e.g. dev-mode keys, test keys).
+    """
+    if db is None:
+        return False
+    row = await db.fetchone(  # type: ignore[union-attr]
+        "SELECT status FROM licenses WHERE license_key = ?",
+        (key,),
+    )
+    if row is None:
+        return False  # Not a DB-issued key (dev/test) — allow it
+    return row[0] != "active"
+
+
 def generate_license(
     tier: str = "pro",
     customer_id: str = "",

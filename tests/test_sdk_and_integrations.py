@@ -13,7 +13,8 @@ from __future__ import annotations
 
 import asyncio
 import json
-from unittest.mock import AsyncMock, MagicMock, patch
+from datetime import UTC
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 from mcp import types
@@ -29,7 +30,6 @@ from janus.mcp.config import AgentConfig, ProxyConfig
 from janus.mcp.proxy import JanusMCPProxy
 from janus.storage.database import DatabaseManager
 from janus.web.events import EventBroadcaster, SecurityEvent
-
 
 # ═══════════════════════════════════════════════════════════════════
 # Shared helpers & fixtures
@@ -1257,10 +1257,10 @@ class TestApprovalManagerEdgeCases:
 
     async def test_create_with_complex_tool_input(self, approval_manager: ApprovalManager) -> None:
         """Tool input with nested structures and non-serializable types."""
-        from datetime import datetime, timezone
+        from datetime import datetime
         req = await approval_manager.create(
             session_id="s1", agent_id="a1", tool_name="complex_tool",
-            tool_input={"nested": {"deep": [1, 2, 3]}, "date": datetime.now(timezone.utc)},
+            tool_input={"nested": {"deep": [1, 2, 3]}, "date": datetime.now(UTC)},
             original_goal="test", verdict="block",
             risk_score=70.0, risk_delta=20.0,
             reasons=["reason 1", "reason 2", "reason 3"],
@@ -1520,7 +1520,6 @@ class TestEventBroadcasterEdgeCases:
         assert b.subscriber_count("session-x") == 0
 
     async def test_event_to_dict(self) -> None:
-        from datetime import datetime, timezone
         ev = SecurityEvent(
             event_type="verdict",
             session_id="s1",

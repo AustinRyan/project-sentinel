@@ -11,9 +11,8 @@ import structlog
 from fastapi import APIRouter, Depends, FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 
-from janus.web.auth import RateLimitMiddleware, require_api_key, require_pro_tier
-
 from janus.config import JanusConfig
+from janus.core.approval import ApprovalManager, needs_human_review
 from janus.core.guardian import Guardian
 from janus.drift.detector import SemanticDriftDetector
 from janus.exporters.coordinator import ExporterCoordinator
@@ -21,17 +20,16 @@ from janus.forensics.explainer import TraceExplainer
 from janus.forensics.recorder import BlackBoxRecorder
 from janus.identity.agent import AgentIdentity, AgentRole, ToolPermission
 from janus.identity.registry import AgentRegistry
-from janus.licensing import generate_license, _reset_verification_key
+from janus.licensing import _reset_verification_key, generate_license
 from janus.llm.classifier import SecurityClassifier
-from janus.llm.client import AnthropicClientWrapper
 from janus.risk.engine import RiskEngine
 from janus.storage.database import DatabaseManager
 from janus.storage.persistent_session_store import PersistentSessionStore
 from janus.storage.session_store import InMemorySessionStore
 from janus.tier import current_tier
 from janus.web.agent import ChatAgent
+from janus.web.auth import RateLimitMiddleware, require_api_key, require_pro_tier
 from janus.web.events import EventBroadcaster
-from janus.core.approval import ApprovalManager, needs_human_review
 from janus.web.schemas import (
     AgentOut,
     ApprovalDecisionOut,
@@ -39,7 +37,6 @@ from janus.web.schemas import (
     ApprovalRequestOut,
     ChatRequest,
     ChatResponseOut,
-    CheckResultOut,
     HealthFullOut,
     HealthOut,
     MessageOut,
@@ -226,8 +223,8 @@ async def _setup() -> None:
             pass  # Agent already exists from previous run
 
     # Create tool registry and executor
-    from janus.tools.registry import ToolRegistry
     from janus.tools.executor import ToolExecutor
+    from janus.tools.registry import ToolRegistry
 
     tool_registry = ToolRegistry(db)
     tool_executor = ToolExecutor(registry=tool_registry)

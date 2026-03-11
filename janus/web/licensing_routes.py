@@ -2,14 +2,14 @@
 from __future__ import annotations
 
 import os
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import structlog
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
-from janus.licensing import generate_license, validate_license
+from janus.licensing import generate_license, is_license_revoked, validate_license
 from janus.tier import current_tier
 from janus.web.auth import rate_limit_license, require_api_key
 
@@ -47,6 +47,16 @@ async def license_activate(req: ActivateRequest) -> JSONResponse:
             status_code=400,
             content={"detail": "Invalid or expired license key"},
         )
+
+    # Check if this license was revoked (subscription cancelled)
+    from janus.web.app import state
+
+    if await is_license_revoked(req.license_key, state.db):
+        return JSONResponse(
+            status_code=403,
+            content={"detail": "This license has been cancelled. Please purchase a new subscription."},
+        )
+
     current_tier.activate(req.license_key)
 
     # Rebuild Guardian pipeline so PRO checks take effect immediately
@@ -139,7 +149,7 @@ async def get_billing_session(session_id: str) -> JSONResponse:
     trial_ends_at = ""
     if created_at:
         try:
-            dt = datetime.fromisoformat(created_at).replace(tzinfo=timezone.utc)
+            dt = datetime.fromisoformat(created_at).replace(tzinfo=UTC)
             trial_ends_at = (dt + timedelta(days=14)).isoformat()
         except (ValueError, TypeError):
             pass
@@ -194,9 +204,9 @@ async def stripe_webhook(request: Request) -> JSONResponse:
 
     if event["type"] == "checkout.session.completed":
         session = event["data"]["object"]
-        customer_email = session.get("customer_email", "")
-        stripe_customer_id = session.get("customer", "")
-        stripe_session_id = session.get("id", "")
+        customer_email = session.get("customer_email") or session.get("customer_details", {}).get("email") or ""
+        stripe_customer_id = session.get("customer") or ""
+        stripe_session_id = session.get("id") or ""
 
         license_key = generate_license(tier="pro", customer_id=customer_email)
 

@@ -3,8 +3,6 @@ from __future__ import annotations
 
 import asyncio
 
-import pytest
-
 from janus.web.events import EventBroadcaster, SecurityEvent
 
 

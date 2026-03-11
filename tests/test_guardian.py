@@ -6,7 +6,7 @@ import pytest
 
 from janus.circuit.breaker import CircuitBreaker, CircuitState
 from janus.config import CircuitBreakerConfig, JanusConfig
-from janus.core.decision import CheckResult, PipelineContext, Verdict
+from janus.core.decision import PipelineContext, Verdict
 from janus.core.guardian import Guardian, _LLMRiskCheck
 from janus.identity.agent import AgentIdentity, AgentRole, ToolPermission
 from janus.identity.registry import AgentRegistry

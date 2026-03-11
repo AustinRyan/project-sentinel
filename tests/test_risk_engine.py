@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import pytest
 import time_machine
 
 from janus.risk.engine import RiskEngine
-from janus.risk.patterns import PatternDetector, PatternMatchResult
+from janus.risk.patterns import PatternDetector
 from janus.risk.scoring import RiskScorer
 from janus.risk.thresholds import (
     DEFAULT_TOOL_BASE_RISK,
@@ -20,7 +20,6 @@ from janus.risk.thresholds import (
     VELOCITY_THRESHOLD_CALLS,
 )
 from janus.storage.session_store import InMemorySessionStore, RiskEvent
-
 
 # ── fixtures ────────────────────────────────────────────────────────
 
@@ -83,7 +82,7 @@ class TestKeywordScanning:
 class TestVelocityPenalty:
     def test_velocity_penalty_below_threshold(self, scorer: RiskScorer) -> None:
         """No penalty when event count is at or below the threshold."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         events = [
             RiskEvent(risk_delta=1.0, new_score=1.0, tool_name="read_file", reason="test", timestamp=now)
             for _ in range(VELOCITY_THRESHOLD_CALLS)
@@ -92,7 +91,7 @@ class TestVelocityPenalty:
 
     def test_velocity_penalty_above_threshold(self, scorer: RiskScorer) -> None:
         """Penalty applied when event count exceeds threshold."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         extra = 3
         events = [
             RiskEvent(risk_delta=1.0, new_score=1.0, tool_name="read_file", reason="test", timestamp=now)
@@ -177,7 +176,7 @@ class TestRiskEngine:
         sid = "sess-decay"
         engine = RiskEngine(session_store=session_store)
 
-        base_time = datetime(2025, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
+        base_time = datetime(2025, 1, 1, 12, 0, 0, tzinfo=UTC)
 
         with time_machine.travel(base_time, tick=False):
             engine.update_score(sid, 50.0)
@@ -186,7 +185,7 @@ class TestRiskEngine:
                 new_score=50.0,
                 tool_name="write_file",
                 reason="test",
-                timestamp=datetime.now(timezone.utc),
+                timestamp=datetime.now(UTC),
             )
             engine.add_event(sid, event)
             assert engine.get_score(sid) == 50.0

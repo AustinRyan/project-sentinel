@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import hashlib
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import pytest
 
@@ -11,7 +11,6 @@ from janus.identity.challenge import IdentityChallenger
 from janus.identity.credential import CredentialManager
 from janus.identity.registry import AgentRegistry
 from janus.storage.database import DatabaseManager
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -35,7 +34,7 @@ def _make_agent(
         name=name,
         role=role,
         permissions=permissions or [],
-        created_at=datetime.now(timezone.utc),
+        created_at=datetime.now(UTC),
         credential_hash=credential_hash,
         credential_expires_at=credential_expires_at,
         credential_last_rotated=credential_last_rotated,
@@ -205,12 +204,12 @@ async def test_get_tool_usage_since(memory_db: DatabaseManager) -> None:
     await registry.record_tool_usage("agent-1", "read_file", "sess-1", 10.0)
 
     # Query with a far-future cutoff should return nothing
-    future = datetime.now(timezone.utc) + timedelta(hours=1)
+    future = datetime.now(UTC) + timedelta(hours=1)
     usage = await registry.get_tool_usage("agent-1", since=future)
     assert len(usage) == 0
 
     # Query with a past cutoff should return everything
-    past = datetime.now(timezone.utc) - timedelta(hours=1)
+    past = datetime.now(UTC) - timedelta(hours=1)
     usage = await registry.get_tool_usage("agent-1", since=past)
     assert len(usage) == 1
 
@@ -252,14 +251,14 @@ async def test_credential_expiry_check(memory_db: DatabaseManager) -> None:
     # Agent with future expiry -> not expired
     agent_future = _make_agent(
         agent_id="future-exp",
-        credential_expires_at=datetime.now(timezone.utc) + timedelta(days=30),
+        credential_expires_at=datetime.now(UTC) + timedelta(days=30),
     )
     assert cred_mgr.is_expired(agent_future) is False
 
     # Agent with past expiry -> expired
     agent_past = _make_agent(
         agent_id="past-exp",
-        credential_expires_at=datetime.now(timezone.utc) - timedelta(days=1),
+        credential_expires_at=datetime.now(UTC) - timedelta(days=1),
     )
     assert cred_mgr.is_expired(agent_past) is True
 
@@ -275,7 +274,7 @@ async def test_credential_not_recently_rotated(memory_db: DatabaseManager) -> No
     # Rotated long ago -> not recently rotated
     old_agent = _make_agent(
         agent_id="old",
-        credential_last_rotated=datetime.now(timezone.utc) - timedelta(hours=48),
+        credential_last_rotated=datetime.now(UTC) - timedelta(hours=48),
     )
     assert cred_mgr.was_recently_rotated(old_agent) is False
 

@@ -5,7 +5,7 @@ import json
 
 import pytest
 
-from janus.core.proof import ProofChain, ProofNode
+from janus.core.proof import ProofChain
 
 
 @pytest.fixture

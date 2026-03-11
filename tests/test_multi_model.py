@@ -7,11 +7,9 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 
 from janus.config import GuardianModelConfig
-from janus.core.exceptions import ClassificationError
 from janus.llm.classifier import SecurityClassifier
 from janus.llm.provider import LLMProvider
 from janus.llm.providers import create_provider
-
 
 # ── Mock provider for protocol testing ──────────────────────────────
 

@@ -7,6 +7,7 @@ import structlog
 from janus.circuit.breaker import CircuitBreaker
 from janus.circuit.health import HealthMonitor
 from janus.config import JanusConfig
+from janus.core.data_extraction import DataVolumeCheck, DataVolumeTracker
 from janus.core.decision import (
     CheckResult,
     PipelineContext,
@@ -14,7 +15,6 @@ from janus.core.decision import (
     ToolCallRequest,
     Verdict,
 )
-from janus.core.data_extraction import DataVolumeCheck, DataVolumeTracker
 from janus.core.injection import PromptInjectionCheck
 from janus.core.pipeline import (
     IdentityCheck,
@@ -30,8 +30,8 @@ from janus.drift.detector import SemanticDriftDetector
 from janus.identity.agent import AgentIdentity
 from janus.identity.registry import AgentRegistry
 from janus.llm.classifier import SecurityClassifier
-from janus.risk.engine import RiskEngine
 from janus.risk import thresholds
+from janus.risk.engine import RiskEngine
 from janus.storage.session_store import InMemorySessionStore, RiskEvent
 from janus.tier import current_tier
 

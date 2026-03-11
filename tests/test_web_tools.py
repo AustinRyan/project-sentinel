@@ -1,9 +1,7 @@
 """Tests for mock demo tools."""
 from __future__ import annotations
 
-import pytest
-
-from janus.web.tools import DEMO_TOOLS, MockToolExecutor
+from janus.web.tools import MockToolExecutor
 
 
 async def test_all_tools_registered() -> None:

@@ -1,8 +1,6 @@
 """Tests for the Prometheus metrics exporter."""
 from __future__ import annotations
 
-import pytest
-
 from janus.core.decision import SecurityVerdict, Verdict
 from janus.exporters.prometheus import PrometheusExporter
 

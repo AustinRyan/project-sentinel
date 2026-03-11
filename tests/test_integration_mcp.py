@@ -3,8 +3,6 @@ from __future__ import annotations
 
 from unittest.mock import AsyncMock
 
-import pytest
-
 from janus.core.decision import SecurityVerdict, Verdict
 from janus.integrations.mcp import JanusMCPServer, MCPToolDefinition
 

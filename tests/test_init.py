@@ -1,10 +1,6 @@
 """Tests for janus init and TOML config loading."""
 from __future__ import annotations
 
-from pathlib import Path
-
-import pytest
-
 from janus.cli.init import TEMPLATE, run_init
 from janus.config import JanusConfig
 

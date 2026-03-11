@@ -9,6 +9,9 @@ from typing import Any
 
 import structlog
 
+from janus.storage.database import DatabaseManager
+from janus.web.events import EventBroadcaster, SecurityEvent
+
 # Checks that represent hard policy violations — no human review needed.
 # If any of these forced the block, it's a clear denial.
 HARD_BLOCK_CHECKS = frozenset({
@@ -19,9 +22,6 @@ HARD_BLOCK_CHECKS = frozenset({
 
 # Verdicts that always warrant human review
 REVIEW_VERDICTS = frozenset({"challenge", "pause"})
-
-from janus.storage.database import DatabaseManager
-from janus.web.events import EventBroadcaster, SecurityEvent
 
 logger = structlog.get_logger()
 

@@ -4,7 +4,6 @@ from __future__ import annotations
 import csv
 import io
 import json
-from datetime import UTC, datetime
 
 import pytest
 

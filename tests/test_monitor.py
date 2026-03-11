@@ -7,11 +7,9 @@ import asyncio
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from janus.core.decision import CheckResult, PipelineContext, SecurityVerdict, Verdict
-from janus.core.pipeline import SecurityPipeline, IdentityCheck, PermissionScopeCheck
+from janus.core.decision import CheckResult, SecurityVerdict, Verdict
 from janus.web.app import _setup, _teardown, create_app, state
 from janus.web.events import EventBroadcaster, SecurityEvent
-
 
 # ── check_results propagation ────────────────────────────────────────
 

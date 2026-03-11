@@ -1,9 +1,6 @@
 """Tests for the chat agent service."""
 from __future__ import annotations
 
-import pytest
-
-from janus.core.decision import SecurityVerdict, Verdict
 from janus.web.agent import ChatMessage, ChatResponse, ToolCallInfo
 
 

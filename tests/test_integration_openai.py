@@ -4,8 +4,6 @@ from __future__ import annotations
 import json
 from unittest.mock import AsyncMock
 
-import pytest
-
 from janus.core.decision import SecurityVerdict, Verdict
 from janus.integrations.openai import JanusFunctionProxy
 

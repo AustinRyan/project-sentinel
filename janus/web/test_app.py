@@ -19,6 +19,7 @@ from janus.core.guardian import Guardian
 from janus.drift.detector import SemanticDriftDetector
 from janus.identity.agent import AgentIdentity, AgentRole, ToolPermission
 from janus.identity.registry import AgentRegistry
+from janus.licensing import generate_license
 from janus.llm.classifier import SecurityClassifier
 from janus.llm.client import AnthropicClientWrapper
 from janus.mcp.config import AgentConfig, ProxyConfig, SessionConfig
@@ -26,14 +27,12 @@ from janus.mcp.proxy import JanusMCPProxy
 from janus.risk.engine import RiskEngine
 from janus.storage.database import DatabaseManager
 from janus.storage.session_store import InMemorySessionStore
-from janus.licensing import generate_license
 from janus.tier import current_tier
 from janus.web.agent import ChatAgent
 from janus.web.events import EventBroadcaster
 from janus.web.mcp_chat_agent import McpChatAgent
 from janus.web.mock_upstream import MockUpstreamManager
 from janus.web.schemas import (
-    AgentOut,
     ChatRequest,
     ChatResponseOut,
     SessionCreateRequest,
@@ -328,7 +327,7 @@ def create_app() -> FastAPI:
             meta = AGENT_META[agent_id]
 
         guardian = _get_guardian(agent_id)
-        risk_engine = _get_risk_engine(agent_id)
+        _get_risk_engine(agent_id)  # ensure risk engine is initialized
         session_id = f"session-{uuid.uuid4().hex[:8]}"
 
         state.sessions[session_id] = {

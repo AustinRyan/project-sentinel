@@ -8,7 +8,6 @@ import structlog
 
 from janus.config import GuardianModelConfig
 from janus.llm.client import AnthropicClientWrapper
-from janus.llm.provider import LLMProvider
 from janus.llm.guardian_prompts import (
     DRIFT_DETECTION_SYSTEM,
     DRIFT_DETECTION_USER,
@@ -19,6 +18,7 @@ from janus.llm.guardian_prompts import (
     TRACE_EXPLANATION_SYSTEM,
     TRACE_EXPLANATION_USER,
 )
+from janus.llm.provider import LLMProvider
 
 logger = structlog.get_logger()
 

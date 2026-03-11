@@ -13,8 +13,9 @@ Usage::
 """
 from __future__ import annotations
 
-import structlog
 from typing import Any
+
+import structlog
 
 from janus.core.approval import ApprovalManager, needs_human_review
 from janus.core.decision import Verdict
